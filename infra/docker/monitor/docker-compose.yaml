@@ -55,10 +55,10 @@ services:
       - '--path.rootfs=/host'
     ports:
       - "9100:9100"
-    pid: host
+    # pid: host  # disabled for Windows/WSL where pid namespace is not shared
     restart: unless-stopped
     volumes:
-      - '/:/host:ro,rslave'
+      - '/:/host:ro'
     networks:
       - aio-network
 

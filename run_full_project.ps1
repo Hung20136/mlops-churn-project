@@ -12,19 +12,47 @@ $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $root
 
 # 1) Start docker services
-Info "Starting Docker platform services (infra/docker/run.sh up)"
-Set-Location "$root\infra\docker"
-if (-Not (Test-Path .\run.sh)) { Err "run.sh not found in infra/docker"; exit 1 }
-bash .\run.sh down
-bash .\run.sh up
-bash .\run.sh status
+function Start-DockerPlatformServices {
+    Info "Starting Docker platform services"
+
+    $dockerRoot = "$root\infra\docker"
+    if (-Not (Test-Path $dockerRoot)) {
+        Err "Expected docker directory not found: $dockerRoot"
+        exit 1
+    }
+
+    # Use docker compose directly so this works in PowerShell on Windows.
+    # (This avoids relying on WSL/bash, which may not be installed.)
+    $services = @("mlflow", "kafka", "monitor", "airflow")
+    foreach ($service in $services) {
+        $serviceDir = Join-Path $dockerRoot $service
+        $composeFile = Join-Path $serviceDir "docker-compose.yaml"
+        if (-Not (Test-Path $composeFile)) {
+            Warn "Service compose file not found: $composeFile"
+            continue
+        }
+
+        Info "Starting service: $service"
+        Push-Location $serviceDir
+        docker compose up -d
+        docker compose ps
+        Pop-Location
+    }
+}
+
+Start-DockerPlatformServices
 
 # 2) Install Python dependencies for data-pipeline
 Info "Installing Python dependencies for data-pipeline"
 Set-Location "$root\data-pipeline"
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install -r requirements.txt
-python -m pip install hiredis dvc-s3 redis feast[redis]
+try {
+    python -m pip install --upgrade pip setuptools wheel
+    python -m pip install -r requirements.txt
+    python -m pip install hiredis dvc-s3 redis feast[redis]
+} catch {
+    Warn "Python dependency install exited with errors; some packages may already be installed or require build tools. Continuing anyway."
+    Write-Host $_.Exception.Message
+}
 
 function Create-LocalSampleData {
     Info "Generating local sample processed data because DVC data is missing or pull failed"
@@ -54,13 +82,34 @@ Info "Applying Feast feature repo"
 Set-Location "$root\data-pipeline\churn_feature_store\churn_features\feature_repo"
 python -c "from feast.cli.cli import cli; import sys; sys.argv=['feast','apply']; cli()"
 
-# 5) Start redis for Feast online store
-Info "Starting Redis for Feast online store"
-try {
-    docker run -d -p 6379:6379 --name redis-feast redis:7 | Out-Null
-} catch {
-    Warn "Redis container may already exist or failed; continue."
+function Ensure-RedisRunning {
+    Info "Ensuring Redis (redis-feast) is running for Feast online store"
+
+    # Check if container exists
+    $containerInfo = docker ps -a --filter "name=redis-feast" --format "{{.Names}}|{{.Status}}" | Select-Object -First 1
+
+    if (-not $containerInfo) {
+        Info "Redis container not found, creating and starting..."
+        docker run -d -p 6379:6379 --name redis-feast redis:7 | Out-Null
+        return
+    }
+
+    $parts = $containerInfo -split '\|', 2
+    $status = $parts[1]
+
+    if ($status -like 'Up*') {
+        Info "Redis container is already running."
+    } elseif ($status -like 'Exited*' -or $status -like 'Created*') {
+        Info "Redis container is present but not running; starting it..."
+        docker start redis-feast | Out-Null
+    } else {
+        Warn "Redis container has unexpected status: $status. Attempting to start anyway."
+        docker start redis-feast | Out-Null
+    }
 }
+
+# 5) Start redis for Feast online store
+Ensure-RedisRunning
 
 # 6) Materialize Feast features
 Info "Materializing incremental features"
@@ -72,4 +121,4 @@ Info "Running sample retrieval script"
 Set-Location "$root\data-pipeline"
 python scripts/sample_retrieval.py
 
-Info "Full project run completed. Open Airflow: http://localhost:8080, MLflow: http://localhost:5000, Grafana: http://localhost:3000"
+Info "Full project run completed. Open Airflow: http://localhost:8080, MLflow: http://localhost:5000, Grafana: http://localhost:3000 , MinIO: http://localhost:9000, Prometheus: http://localhost:9090"

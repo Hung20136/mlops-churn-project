@@ -24,8 +24,8 @@ def prepare_data_for_feast(input_path, output_path="data/processed_churn_data.pa
     # Create created timestamp (when feature was computed)
     df['created_timestamp'] = current_time
     
-    # Ensure customer_id is string
-    df['customer_id'] = df['CustomerID'].astype(str)
+    # Ensure customer_id is integer to match Feast Entity value_type
+    df['customer_id'] = df['CustomerID'].astype('int64')
     
     # Map column names to Feast-compatible names
     column_mapping = {
