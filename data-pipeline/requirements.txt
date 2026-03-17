@@ -5,4 +5,4 @@ dvc-s3
 matplotlib
 seaborn
 feast
-feast[redis]
+redis

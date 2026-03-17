@@ -1,0 +1,4 @@
+{
+  "LogisticRegression_score-2_dval": "LogisticRegression.score(X=dval, y=y_val)",
+  "LogisticRegression_score_dtrain": "LogisticRegression.score(X=dtrain, y=y_train)"
+}

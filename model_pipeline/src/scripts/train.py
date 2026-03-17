@@ -3,6 +3,7 @@ Docstring for model_pipeline.src.scripts.train
 """
 from pathlib import Path
 import argparse
+import sys
 import pandas as pd
 import yaml
 from loguru import logger
@@ -18,10 +19,19 @@ from src.model.xgboost_trainer import GenericBinaryClassifierTrainer
 from src.utility.helper import load_config
 import os
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 os.environ["AWS_ACCESS_KEY_ID"] = "minio"
 os.environ["AWS_SECRET_ACCESS_KEY"] = "minio123"
 os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
 os.environ["MLFLOW_S3_ENDPOINT_URL"] = "http://localhost:9000"
+os.environ["AWS_EC2_METADATA_DISABLED"] = "true"
+# If these are set, boto3 will try to load ~/.aws/config which may not exist.
+os.environ.pop("AWS_PROFILE", None)
+os.environ.pop("AWS_DEFAULT_PROFILE", None)
 
 
 

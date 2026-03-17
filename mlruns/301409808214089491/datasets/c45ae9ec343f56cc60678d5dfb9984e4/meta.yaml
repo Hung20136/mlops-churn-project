@@ -1,0 +1,14 @@
+digest: e8c85621
+name: dataset
+profile: '{"num_rows": 3, "num_elements": 30}'
+schema: '{"mlflow_colspec": [{"type": "long", "name": "age", "required": true}, {"type":
+  "long", "name": "gender", "required": true}, {"type": "long", "name": "tenure_months",
+  "required": true}, {"type": "long", "name": "usage_frequency", "required": true},
+  {"type": "long", "name": "support_calls", "required": true}, {"type": "long", "name":
+  "payment_delay_days", "required": true}, {"type": "long", "name": "subscription_type",
+  "required": true}, {"type": "long", "name": "contract_length", "required": true},
+  {"type": "long", "name": "total_spend", "required": true}, {"type": "long", "name":
+  "last_interaction_days", "required": true}]}'
+source: '{"tags": {"mlflow.user": "TUF", "mlflow.source.name": "model_pipeline/src/scripts/train.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "1a05b7e2bc0145cb7a36d545d3003757d4f24aa3"}}'
+source_type: code

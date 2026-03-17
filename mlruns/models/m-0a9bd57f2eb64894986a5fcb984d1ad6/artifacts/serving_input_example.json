@@ -1,0 +1,54 @@
+{
+  "dataframe_split": {
+    "columns": [
+      "age",
+      "gender",
+      "tenure_months",
+      "usage_frequency",
+      "support_calls",
+      "payment_delay_days",
+      "subscription_type",
+      "contract_length",
+      "total_spend",
+      "last_interaction_days"
+    ],
+    "data": [
+      [
+        26,
+        "F",
+        10,
+        17,
+        2,
+        24,
+        "Premium",
+        "year",
+        1887,
+        54
+      ],
+      [
+        68,
+        "F",
+        21,
+        11,
+        8,
+        0,
+        "Premium",
+        "year",
+        1512,
+        20
+      ],
+      [
+        20,
+        "M",
+        22,
+        42,
+        9,
+        7,
+        "Premium",
+        "year",
+        1205,
+        7
+      ]
+    ]
+  }
+}

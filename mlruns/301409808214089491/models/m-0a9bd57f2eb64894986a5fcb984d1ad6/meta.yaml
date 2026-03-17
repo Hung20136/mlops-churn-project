@@ -1,0 +1,10 @@
+artifact_location: file:D:/PH/CNM/HW/New folder/aio2025-mlops-project01/mlruns/models/m-0a9bd57f2eb64894986a5fcb984d1ad6/artifacts
+creation_timestamp: 1773753344455
+experiment_id: '301409808214089491'
+last_updated_timestamp: 1773753349422
+model_id: m-0a9bd57f2eb64894986a5fcb984d1ad6
+model_type: null
+name: logistic_regression_churn
+source_run_id: 8f4c8830d88349cca18af605e0d64a77
+status: 2
+status_message: null

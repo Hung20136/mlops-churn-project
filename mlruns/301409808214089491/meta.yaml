@@ -1,0 +1,7 @@
+artifact_location: file:D:/PH/CNM/HW/New folder/aio2025-mlops-project01/mlruns
+creation_time: 1773753131058
+experiment_id: '301409808214089491'
+last_update_time: 1773753131058
+lifecycle_stage: active
+name: test_churn_prediction_logistic_v1.1
+workspace: default

@@ -1,0 +1,14 @@
+artifact_uri: file:D:/PH/CNM/HW/New folder/aio2025-mlops-project01/mlruns/8f4c8830d88349cca18af605e0d64a77/artifacts
+end_time: 1773753349585
+entry_point_name: ''
+experiment_id: '301409808214089491'
+lifecycle_stage: active
+run_id: 8f4c8830d88349cca18af605e0d64a77
+run_name: my_run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1773753342564
+status: 3
+tags: []
+user_id: TUF

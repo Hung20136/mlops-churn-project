@@ -1,0 +1,37 @@
+artifact_path: file:D:/PH/CNM/HW/New folder/aio2025-mlops-project01/mlruns/models/m-dac5e4a5b3c44a45a37df45dd0b89a00/artifacts
+flavors:
+  python_function:
+    cloudpickle_version: 3.1.2
+    code: code
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.14.2
+    streamable: false
+is_signature_from_type_hint: false
+mlflow_version: 3.10.1
+model_id: m-dac5e4a5b3c44a45a37df45dd0b89a00
+model_size_bytes: 2928
+model_uuid: m-dac5e4a5b3c44a45a37df45dd0b89a00
+prompts: null
+run_id: 5f064315f829492f84104c13869d9af2
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "age", "required": true}, {"type": "string",
+    "name": "gender", "required": true}, {"type": "long", "name": "tenure_months",
+    "required": true}, {"type": "long", "name": "usage_frequency", "required": true},
+    {"type": "long", "name": "support_calls", "required": true}, {"type": "long",
+    "name": "payment_delay_days", "required": true}, {"type": "string", "name": "subscription_type",
+    "required": true}, {"type": "string", "name": "contract_length", "required": true},
+    {"type": "long", "name": "total_spend", "required": true}, {"type": "long", "name":
+    "last_interaction_days", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-03-17 13:12:13.412809'
